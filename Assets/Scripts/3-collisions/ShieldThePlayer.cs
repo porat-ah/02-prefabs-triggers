@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class ShieldThePlayer : MonoBehaviour {
     [Tooltip("The number of seconds that the shield remains active")] [SerializeField] float duration;
-
+    Fade shieldVis;
+    public void setFade(Fade fade)
+     {
+        shieldVis = fade;
+     }
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.tag == "Player") {
             Debug.Log("Shield triggered by player");
@@ -26,10 +30,12 @@ public class ShieldThePlayer : MonoBehaviour {
         destroyComponent.enabled = false;
         for (float i = duration; i > 0; i--) {
             Debug.Log("Shield: " + i + " seconds remaining!");
+            shieldVis.setAlpha(i);
             yield return new WaitForSeconds(1);       // co-routines
             // await Task.Delay(1000);                // async-await
         }
         Debug.Log("Shield gone!");
+        shieldVis.setAlpha(0f);
         destroyComponent.enabled = true;
     }
 }
